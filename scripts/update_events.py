@@ -39,6 +39,20 @@ CATEGORY_KEYWORDS = [
     ("kitakou", ["北甲エリア"]),
 ]
 
+# 一覧ページのタイトルは「【東京B:開催案内】〜」のような角括弧プレフィックスを持つ。
+# プレフィックスの略号から確実にカテゴリを判定できる。
+CATEGORY_PREFIX_MAP = [
+    (re.compile(r"東京\s*B"), "tokyo"),
+    (re.compile(r"全国"), "zenkoku"),
+    (re.compile(r"南\s*A"), "minami"),
+    (re.compile(r"総武\s*A"), "sobu"),
+    (re.compile(r"武蔵野\s*A"), "musashino"),
+    (re.compile(r"北甲\s*A"), "kitakou"),
+]
+
+# 開催報告・アーカイブ等、今後の予定として掲載する意味がないお知らせは除外する
+SKIP_TITLE_KEYWORDS = ["開催報告", "アーカイブ"]
+
 DATE_FIELD_LABELS = ["実施日", "開催日", "日時", "開催期間", "開催日時"]
 VENUE_FIELD_LABELS = ["会場", "場所", "開催場所"]
 DEADLINE_FIELD_LABELS = ["申込締切", "締切", "締め切り", "申込期限"]
@@ -91,12 +105,29 @@ def extract_field(body_text, labels):
 
 
 def guess_category(title, body_text):
+    m = re.search(r"【([^:：】]+)[:：]", title)
+    if m:
+        prefix = m.group(1)
+        for pattern, cat in CATEGORY_PREFIX_MAP:
+            if pattern.search(prefix):
+                return cat, True
+
     haystack = title + "\n" + body_text
     for cat, keywords in CATEGORY_KEYWORDS:
         for kw in keywords:
             if kw in haystack:
                 return cat, True
     return "tokyo", False  # デフォルト・低確信度
+
+
+DATE_LINE_RE = re.compile(r"^\d{4}年\d{1,2}月\d{1,2}日")
+
+
+def clean_title(raw_text):
+    """一覧のリンクテキストから日付行・NEWバッジ行を除いた本文タイトルを取り出す。"""
+    lines = [normalize(ln) for ln in raw_text.split("\n")]
+    lines = [ln for ln in lines if ln and not DATE_LINE_RE.match(ln) and ln != "NEW"]
+    return lines[-1] if lines else ""
 
 
 def list_seminar_links(html):
@@ -107,18 +138,25 @@ def list_seminar_links(html):
         if not m:
             continue
         news_id = m.group(1)
-        title = normalize(a.get_text())
+        raw_text = a.get_text("\n")
+        title = clean_title(raw_text)
         if not title:
-            # リンクテキストが空ならその祖先要素のテキストを試す
             parent = a.find_parent()
-            title = normalize(parent.get_text()) if parent else ""
-        if news_id not in seen and title:
-            seen[news_id] = {
-                "id": news_id,
-                "title": title,
-                "url": f"{BASE}/news/news_detail_{news_id}.html",
-            }
+            title = clean_title(parent.get_text("\n")) if parent else ""
+        if news_id in seen or not title:
+            continue
+        if any(kw in title for kw in SKIP_TITLE_KEYWORDS):
+            continue
+        seen[news_id] = {
+            "id": news_id,
+            "title": title,
+            "url": f"{BASE}/news/news_detail_{news_id}.html",
+        }
     return list(seen.values())
+
+
+def strip_category_prefix(title):
+    return re.sub(r"^【[^】]*】\s*", "", title).strip()
 
 
 def build_event_entries(item, today):
@@ -134,6 +172,7 @@ def build_event_entries(item, today):
     deadline_date = parse_jp_date(deadline_field, today.year) if deadline_field else None
 
     category, confident = guess_category(item["title"], body_text)
+    display_title = strip_category_prefix(item["title"]) or item["title"]
 
     entries = []
     needs_review = []
@@ -141,7 +180,7 @@ def build_event_entries(item, today):
     if deadline_date:
         entries.append({
             "date": deadline_date,
-            "name": f"⚠️ 締切：{item['title']}",
+            "name": f"⚠️ 締切：{display_title}",
             "time": "締切",
             "venue": "",
             "category": category,
@@ -152,7 +191,7 @@ def build_event_entries(item, today):
     if event_date:
         entries.append({
             "date": event_date,
-            "name": item["title"],
+            "name": display_title,
             "time": date_field or "",
             "venue": venue or "",
             "category": category,
