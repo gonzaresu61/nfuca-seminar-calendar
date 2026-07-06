@@ -314,7 +314,7 @@
 </div>
 
 <script>
-const LAST_UPDATED = '2026年7月1日'; // AUTO:LAST_UPDATED
+const LAST_UPDATED = '2026年7月6日'; // AUTO:LAST_UPDATED
 
 const CATEGORIES = {
   tokyo:     { label: '東京ブロック',   cssClass: 'cat-tokyo',     dotColor: '#3b82f6' },
@@ -327,12 +327,42 @@ const CATEGORIES = {
 
 // AUTO:EVENTS:START
 const EVENTS = [
+  { date:'2026-05-02', name:'⚠️ 締切：2026年04月14日(火)  
+
+  【武蔵野A:開催要項・申込開始】第1回集まれ!むさっしーず', time:'締切', venue:'', category:'tokyo', url:'https://www.nfuca-tokyo.jp/news/news_detail_2395.html', isDeadline:true },
+  { date:'2026-05-04', name:'⚠️ 締切：2026年04月09日(木)  
+
+  【総武A:開催案内&要項】第1回総武エリア連帯「生協といっしょ!」', time:'締切', venue:'', category:'tokyo', url:'https://www.nfuca-tokyo.jp/news/news_detail_2391.html', isDeadline:true },
+  { date:'2026-05-07', name:'2026年04月16日(木)  
+
+  【北甲A:開催要項】北甲エリアミーティング', time:'2026年5月7日(木)18 時~20時', venue:'オンライン(Zoom)', category:'tokyo', url:'https://www.nfuca-tokyo.jp/news/news_detail_2399.html' },
+  { date:'2026-05-09', name:'2026年04月09日(木)  
+
+  【総武A:開催案内&要項】第1回総武エリア連帯「生協といっしょ!」', time:'2026年5月9日(土)13:00~18:00(予定)', venue:'東京大学・駒場キャンパス(', category:'tokyo', url:'https://www.nfuca-tokyo.jp/news/news_detail_2391.html' },
+  { date:'2026-05-09', name:'2026年05月01日(金)  
+
+  【武蔵野A:開催News・申込締切延長!】第1回集まれ!むさっしーず', time:'5月9日(土)12:30~17:30(16:30~懇親会)', venue:'東京外国語大学 食堂', category:'tokyo', url:'https://www.nfuca-tokyo.jp/news/news_detail_2417.html' },
+  { date:'2026-05-09', name:'2026年04月14日(火)  
+
+  【武蔵野A:開催要項・申込開始】第1回集まれ!むさっしーず', time:'5月9日(土)12:30~17:30(16:30~懇親会)', venue:'東京外国語大学 食堂', category:'tokyo', url:'https://www.nfuca-tokyo.jp/news/news_detail_2395.html' },
+  { date:'2026-06-07', name:'⚠️ 締切：2026年06月05日(金)  
+
+  【北甲A:開催NEWS】北甲のつどい初夏2026', time:'締切', venue:'', category:'tokyo', url:'https://www.nfuca-tokyo.jp/news/news_detail_2445.html', isDeadline:true },
+  { date:'2026-06-20', name:'2026年06月05日(金)  
+
+  【北甲A:開催NEWS】北甲のつどい初夏2026', time:'6月20日(土)13:00~21日(日)16:00', venue:'山梨大学甲府キャンパス', category:'tokyo', url:'https://www.nfuca-tokyo.jp/news/news_detail_2445.html' },
   { date:'2026-07-01', name:'⚠️ 締切：南エリアミーティング申込', time:'23:59締切', venue:'', category:'minami', url:'https://www.nfuca-tokyo.jp/news/news_detail_2458.html', isDeadline:true },
   { date:'2026-07-03', name:'⚠️ 締切：新学期スタート会議2026申込', time:'23:59締切', venue:'', category:'tokyo', url:'https://www.nfuca-tokyo.jp/news/news_detail_2471.html', isDeadline:true },
   { date:'2026-07-05', name:'第1回 南エリアミーティング', time:'12:30〜17:30', venue:'東京都立大学 南大沢キャンパス 食堂', category:'minami', url:'https://www.nfuca-tokyo.jp/news/news_detail_2458.html' },
   { date:'2026-07-06', name:'⚠️ 締切：全国環境セミナー2026申込', time:'17:00締切', venue:'', category:'zenkoku', url:'https://www.nfuca-tokyo.jp/news/news_detail_2469.html', isDeadline:true },
+  { date:'2026-07-07', name:'⚠️ 締切：2026年06月24日(水)  
+
+  【全国:締切延長】新学期デザインミーティングについて', time:'締切', venue:'', category:'tokyo', url:'https://www.nfuca-tokyo.jp/news/news_detail_2468.html', isDeadline:true },
   { date:'2026-07-11', name:'新学期スタート会議2026 (26SSK)', time:'13:30〜17:30（午前：第3回ブロック運営委員会）', venue:'東京海洋大学 品川キャンパス', category:'tokyo', url:'https://www.nfuca-tokyo.jp/news/news_detail_2471.html' },
   { date:'2026-07-11', name:'全国環境セミナー2026 [1日目]', time:'13:00〜18:00', venue:'山形大学 小白川キャンパス（対面）', category:'zenkoku', url:'https://www.nfuca-tokyo.jp/news/news_detail_2469.html' },
+  { date:'2026-07-11', name:'2026年07月01日(水)  NEW
+
+  【東京B:開催News! Vol.3】【申込延長!】新学期スタート会議2026', time:'7月11日(土)', venue:'東京海洋大学 品川キャンパス', category:'tokyo', url:'https://www.nfuca-tokyo.jp/news/news_detail_2474.html' },
   { date:'2026-07-12', name:'全国環境セミナー2026 [2日目]', time:'10:00〜12:30', venue:'山形大学 小白川キャンパス（対面）', category:'zenkoku', url:'https://www.nfuca-tokyo.jp/news/news_detail_2469.html' },
   { date:'2026-07-21', name:'かけこみ相談会 〜7月編〜', time:'18:00〜19:00', venue:'オンライン（Zoom）', category:'tokyo', url:'https://www.nfuca-tokyo.jp/news/news_detail_2470.html' },
   { date:'2026-07-31', name:'⚠️ 締切：共済セミナー展示エントリー', time:'23:59締切', venue:'', category:'zenkoku', url:'https://www.nfuca-tokyo.jp/news/news_detail_2472.html', isDeadline:true },
