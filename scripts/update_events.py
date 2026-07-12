@@ -30,8 +30,9 @@ BASE = "https://www.nfuca-tokyo.jp"
 SEMINAR_URL = f"{BASE}/seminar.html"
 INDEX_PATH = "index.html"
 JST = timezone(timedelta(hours=9))
-# リポジトリを汚さないよう、サマリーはリポジトリ外の一時ディレクトリに書き出す
-SUMMARY_PATH = "/tmp/update_summary.json"
+# ワークフロー実行環境によっては /tmp や RUNNER_TEMP がステップ間で共有されないため、
+# リポジトリ内の相対パスに書き出す（コミット前にワークフロー側で削除する）
+SUMMARY_PATH = "update_summary.json"
 
 CATEGORY_KEYWORDS = [
     ("tokyo", ["東京ブロック", "ブロック運営委員会", "スタート会議", "サマースクール", "かけこみ相談会"]),
