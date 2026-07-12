@@ -29,7 +29,7 @@ jobs:
       - name: Read summary
         id: summary
         run: |
-          echo "changed=$(python -c "import json;print(json.load(open('/tmp/update_summary.json'))['changed'])")" >> "$GITHUB_OUTPUT"
+          echo "changed=$(python -c "import json;print(json.load(open('update_summary.json'))['changed'])")" >> "$GITHUB_OUTPUT"
 
       - name: Build PR body
         if: steps.summary.outputs.changed == 'True'
@@ -37,7 +37,7 @@ jobs:
         run: |
           python - <<'EOF' >> "$GITHUB_OUTPUT"
           import json
-          data = json.load(open('/tmp/update_summary.json'))
+          data = json.load(open('update_summary.json'))
           lines = ["## 新しく検出されたお知らせ", ""]
           for it in data["new_items"]:
               lines.append(f"- [{it['title']}]({it['url']})")
@@ -53,6 +53,9 @@ jobs:
           print(body)
           print("EOF_BODY")
           EOF
+
+      - name: Remove summary file before commit
+        run: rm -f update_summary.json
 
       - name: Create Pull Request
         if: steps.summary.outputs.changed == 'True'
