@@ -31,7 +31,7 @@ SEMINAR_URL = f"{BASE}/seminar.html"
 INDEX_PATH = "index.html"
 JST = timezone(timedelta(hours=9))
 # リポジトリを汚さないよう、サマリーはリポジトリ外の一時ディレクトリに書き出す
-SUMMARY_PATH = os.path.join(os.environ.get("RUNNER_TEMP", "/tmp"), "update_summary.json")
+SUMMARY_PATH = "/tmp/update_summary.json"
 
 CATEGORY_KEYWORDS = [
     ("tokyo", ["東京ブロック", "ブロック運営委員会", "スタート会議", "サマースクール", "かけこみ相談会"]),
